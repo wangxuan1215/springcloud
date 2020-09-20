@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="JavaScriptSettings">
+    <option name="languageLevel" value="ES6" />
+  </component>
+  <component name="MavenProjectsManager">
+    <option name="originalFiles">
+      <list>
+        <option value="$PROJECT_DIR$/eureka001/pom.xml" />
+        <option value="$PROJECT_DIR$/eureka002/pom.xml" />
+        <option value="$PROJECT_DIR$/order001/pom.xml" />
+        <option value="$PROJECT_DIR$/user001/pom.xml" />
+        <option value="$PROJECT_DIR$/user002/pom.xml" />
+        <option value="$PROJECT_DIR$/getway001/pom.xml" />
+        <option value="$PROJECT_DIR$/config001/pom.xml" />
+        <option value="$PROJECT_DIR$/gateway001/pom.xml" />
+      </list>
+    </option>
+    <option name="ignoredFiles">
+      <set>
+        <option value="$PROJECT_DIR$/gateway002/pom.xml" />
+      </set>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="false" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/out" />
+  </component>
+</project>
