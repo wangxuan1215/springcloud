@@ -1,6 +1,7 @@
 package com.wangx.user001.controller;
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import com.wangx.user001.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +23,9 @@ public class UserController {
     private Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @GetMapping("/getUserInfo/{userId}")
-    @HystrixCommand(fallbackMethod = "feignUserFallback"
+    @HystrixCommand(fallbackMethod = "feignUserFallback",commandProperties ={
+            @HystrixProperty(name="execution.isolation.thread.timeoutInMilliseconds" ,value="10000")
+    }
 //            , commandProperties = {
 //            @HystrixProperty(name = "circuitBreaker.enabled", value = "true"),//开启熔断
 //            @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "10"),//请求次数
@@ -32,7 +35,6 @@ public class UserController {
     )
     public String getUserInfo(@PathVariable String userId) {
         try {
-            Thread.sleep(500);
             logger.info("======>>>>>>订单id查询用户id-调用 url:{{}} params:{}", "/remote/getUserInfo", userId);
             return userService.getUserInfo(userId);
         } catch (RuntimeException b) {
@@ -44,8 +46,9 @@ public class UserController {
         }
     }
 
-    public String feignUserFallback() {
-        return "网络不可用，请稍后重试";
+    //*****降级方法参数需要一致
+    public String feignUserFallback(@PathVariable String userId) {
+        return "user网络不可用，请稍后重试";
     }
 
 

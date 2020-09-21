@@ -8,6 +8,6 @@ public class UserFeignFallback implements UserFeign {
 
     @Override
     public String getUserInfo(@PathVariable String orderId) {
-        return "网络异常，请稍后再试";
+        return "order网络不可用，请稍后再试";
     }
 }
