@@ -14,6 +14,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 public interface UserFeign {
 
     @GetMapping("/getUserInfo/{userId}")
-    String getUserInfo(@PathVariable String orderId);
+    String getUserInfo(@PathVariable String userId);
 
 }
