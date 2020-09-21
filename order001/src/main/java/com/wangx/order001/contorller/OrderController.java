@@ -35,7 +35,7 @@ public class OrderController {
     /**
      * 通过订单id查询用户信息
      */
-    @GetMapping("/getOrderInfo/{id}")//通过feign，找到远程服务和暴露的接口
+    @GetMapping("/remote/getUserInfo/{id}")//通过feign，找到远程服务和暴露的接口
     public String feignUser(@PathVariable String id) {
         return orderInfoService.getUserInfoByOrderId(id);
     }
@@ -43,16 +43,16 @@ public class OrderController {
     /**
      * 通过订单id查询订单信息
      */
-    @GetMapping("/remote/getUserInfo/{id}")
+    @GetMapping("/getOrderInfo/{id}")
     public String orderInfo(@PathVariable String id) {
         try {
-            logger.info("======>>>>>>订单id远程查询用户id-调用 url:{{}} params:{}", "/remote/getUserInfo", id);
+            logger.info("======>>>>>>通过订单id查询订单信息-调用 url:{{}} params:{}", "/getOrderInfo", id);
             return orderInfoService.orderInfo(id);
         } catch (RuntimeException b) {
-            logger.error("<<<<<<======订单id远程查询用户id-出错 reason:{}", "/remote/getUserInfo", b);
+            logger.error("<<<<<<======通过订单id查询订单信息-出错 reason:{}", "/getOrderInfo", b);
             return "500";
         } catch (Exception e) {
-            logger.error("<<<<<<======订单id远程查询用户id-出错 reason:{}", "/remote/getUserInfo", e);
+            logger.error("<<<<<<======通过订单id查询订单信息-出错 reason:{}", "/getOrderInfo", e);
             return "500";
         }
     }
