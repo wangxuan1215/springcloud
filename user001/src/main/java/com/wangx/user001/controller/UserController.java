@@ -23,8 +23,8 @@ public class UserController {
     private Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @GetMapping("/getUserInfo/{userId}")
-    @HystrixCommand(fallbackMethod = "feignUserFallback",commandProperties ={
-            @HystrixProperty(name="execution.isolation.thread.timeoutInMilliseconds" ,value="10000")
+    @HystrixCommand(fallbackMethod = "feignUserFallback", commandProperties = {
+            @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "10000")
     }
 //            , commandProperties = {
 //            @HystrixProperty(name = "circuitBreaker.enabled", value = "true"),//开启熔断
@@ -48,7 +48,7 @@ public class UserController {
 
     //*****降级方法参数需要一致
     public String feignUserFallback(@PathVariable String userId) {
-        return "user网络不可用，请稍后重试";
+        return "user001网络不可用，请稍后重试";
     }
 
 

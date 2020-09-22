@@ -1,6 +1,6 @@
-package com.wangx.user001.service;
+package com.wangx.user002.service;
 
-import com.wangx.user001.dao.UserDao;
+import com.wangx.user002.dao.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +14,6 @@ public class UserService {
 
     public String getUserInfo(String userId) {
         Optional.ofNullable(userId).orElseThrow(() -> new RuntimeException("userId不能为空"));
-        return "user001服务：" + userDao.getUserInfo(userId);
+        return "user002服务：" + userDao.getUserInfo(userId);
     }
 }

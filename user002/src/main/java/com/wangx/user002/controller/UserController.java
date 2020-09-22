@@ -1,8 +1,14 @@
 package com.wangx.user002.controller;
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
+import com.wangx.user002.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -11,8 +17,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RefreshScope //刷新config配置
 public class UserController {
 
-    @GetMapping("/getUserInfo")
-    @HystrixCommand(fallbackMethod = "feignUserFallback"
+    @Autowired
+    private UserService userService;
+    private Logger logger = LoggerFactory.getLogger(UserController.class);
+
+    @GetMapping("/getUserInfo/{userId}")
+    @HystrixCommand(fallbackMethod = "feignUserFallback", commandProperties = {
+            @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "10000")
+    }
 //            , commandProperties = {
 //            @HystrixProperty(name = "circuitBreaker.enabled", value = "true"),//开启熔断
 //            @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "10"),//请求次数
@@ -20,19 +32,24 @@ public class UserController {
 //            @HystrixProperty(name = "circuitBreaker.errorThresholdPercentage", value = "90"),//错误率
 //    }
     )
-    public String getUserInfo() {
-        //测试本地服务超时，自动降级
+    public String getUserInfo(@PathVariable String userId) {
         try {
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+            logger.info("======>>>>>>订单id查询用户id-调用 url:{{}} params:{}", "/remote/getUserInfo", userId);
+            return userService.getUserInfo(userId);
+        } catch (RuntimeException b) {
+            logger.error("<<<<<<======订单id查询用户id-出错 reason:{}", "/remote/getUserInfo", b);
+            return "500";
+        } catch (Exception e) {
+            logger.error("<<<<<<======订单id查询用户id-出错 reason:{}", "/remote/getUserInfo", e);
+            return "500";
         }
-        return "这是用户服务2";
     }
 
-    public String feignUserFallback() {
-        return "网络不可用，请稍后重试";
+    //*****降级方法参数需要一致
+    public String feignUserFallback(@PathVariable String userId) {
+        return "user002网络不可用，请稍后重试";
     }
+
 
 //    /**
 //     * config统一配置中心文件内容
