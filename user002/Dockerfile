@@ -5,7 +5,7 @@ FROM java:8
 ADD *.jar app.jar
 
 #申明端口
-EXPOSE 9000
+EXPOSE 6002
 
 #最后运行 /app.jar 就是说在容器根目录下
 ENTRYPOINT ["java", "-jar","/app.jar"]
