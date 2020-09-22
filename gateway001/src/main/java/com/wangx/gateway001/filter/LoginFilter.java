@@ -16,12 +16,12 @@ import reactor.core.publisher.Mono;
 public class LoginFilter implements GlobalFilter, Ordered {
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-        System.out.println("开始进行gateway过滤");
+        System.out.println("开始进行gateway001过滤");
         String uname = exchange.getRequest().getQueryParams().getFirst("uname");
         if (StringUtils.isBlank(uname)) {
             System.out.println("该请求为非法用户");
             exchange.getResponse().setStatusCode(HttpStatus.NOT_ACCEPTABLE);
-            System.out.println("gateway过滤该请求");
+            System.out.println("gateway001过滤该请求");
             return exchange.getResponse().setComplete();
         }
         System.out.println("该请求为正常用户");
