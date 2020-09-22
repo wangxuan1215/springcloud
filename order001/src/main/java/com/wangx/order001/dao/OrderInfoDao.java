@@ -5,6 +5,6 @@ import org.apache.ibatis.annotations.Select;
 
 @Mapper
 public interface OrderInfoDao {
-    @Select("select user_id from order_info")
+    @Select("select user_id from order_info where id=#{id}")
     String orderInfo(String id);
 }
