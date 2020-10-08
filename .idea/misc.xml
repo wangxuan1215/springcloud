@@ -15,6 +15,7 @@
         <option value="$PROJECT_DIR$/config001/pom.xml" />
         <option value="$PROJECT_DIR$/gateway001/pom.xml" />
         <option value="$PROJECT_DIR$/gateway002/pom.xml" />
+        <option value="$PROJECT_DIR$/authcenter/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">

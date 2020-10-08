@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/authcenter/authcenter.iml" filepath="$PROJECT_DIR$/authcenter/authcenter.iml" />
       <module fileurl="file://$PROJECT_DIR$/config001/config001.iml" filepath="$PROJECT_DIR$/config001/config001.iml" />
       <module fileurl="file://$PROJECT_DIR$/eureka001/eureka001.iml" filepath="$PROJECT_DIR$/eureka001/eureka001.iml" />
       <module fileurl="file://$PROJECT_DIR$/eureka002/eureka002.iml" filepath="$PROJECT_DIR$/eureka002/eureka002.iml" />
