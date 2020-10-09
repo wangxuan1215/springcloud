@@ -41,7 +41,7 @@ public class LoginController {
             Map<String, Object> dataMap = new HashMap<>();
             dataMap.put("token", token);
             dataMap.put("refreshToken", refreshToken);
-            resultMap.put("code", "10000");
+            resultMap.put("code", "200");
             resultMap.put("data", dataMap);
             return resultMap;
         }
