@@ -17,6 +17,7 @@ import reactor.core.publisher.Mono;
 @Component
 public class LoginFilter implements GlobalFilter, Ordered {
 
+    public static final String LOGIN_URL = "/authcenter/login";
     private Logger logger = LoggerFactory.getLogger(LoginFilter.class);
 
     @Override
@@ -26,11 +27,13 @@ public class LoginFilter implements GlobalFilter, Ordered {
         //从请求头中取出token
         String token = exchange.getRequest().getHeaders().getFirst("Authorization");
         if (StringUtils.isBlank(token)) {
-            //验证是否是登陆接口，登陆接口放行
+            //登陆接口放行
             String url = exchange.getRequest().getURI().getPath();
-            if (url.contains("authcenter")) {
+            if (url.contains(LOGIN_URL)) {
+                logger.info("路由登陆认证服务.....");
                 return chain.filter(exchange);
             } else {
+                //提示登陆
                 exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
                 logger.info("gateway001过滤该请求,请先登陆！");
                 return exchange.getResponse().setComplete();

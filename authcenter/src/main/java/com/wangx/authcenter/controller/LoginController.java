@@ -1,53 +1,59 @@
 package com.wangx.authcenter.controller;
 
-import com.wangx.authcenter.util.JwtUtil;
-import org.apache.commons.lang.StringUtils;
+import com.wangx.authcenter.common.Result;
+import com.wangx.authcenter.service.LoginService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-
 @RestController
-@RefreshScope //刷新config配置
 @RequestMapping
+@RefreshScope //刷新config配置
 public class LoginController {
 
-    @RequestMapping("/login")
-    public Map<String, Object> login(@RequestParam String userName,
-                                     @RequestParam String password) {
-        Map<String, Object> resultMap = new HashMap<>();
-        //账号密码校验
-        if (StringUtils.equals(userName, "admin") &&
-                StringUtils.equals(password, "123")) {
 
-            //生成JWT
-            String token = JwtUtil.generateToken(userName);
-            //生成refreshToken
-            String refreshToken = UUID.randomUUID().toString().replaceAll("-", "");
-//            //保存refreshToken至redis，使用hash结构保存使用中的token以及用户标识
-//            String refreshTokenKey = String.format(jwtRefreshTokenKeyFormat, refreshToken);
-//            stringRedisTemplate.opsForHash().put(refreshTokenKey,
-//                    "token", token);
-//            stringRedisTemplate.opsForHash().put(refreshTokenKey,
-//                    "userName", userName);
-//            //refreshToken设置过期时间
-//            stringRedisTemplate.expire(refreshTokenKey,
-//                    refreshTokenExpireTime, TimeUnit.MILLISECONDS);
-            //返回结果
-            Map<String, Object> dataMap = new HashMap<>();
-            dataMap.put("token", token);
-            dataMap.put("refreshToken", refreshToken);
-            resultMap.put("code", "200");
-            resultMap.put("data", dataMap);
-            return resultMap;
+    @Autowired
+    private LoginService loginService;
+    private Logger logger = LoggerFactory.getLogger(LoginController.class);
+
+    @PostMapping("/login")
+    public Result login(@RequestParam("userId") String userId,
+                        @RequestParam("password") String password) {
+        try {
+            logger.info("=====调用登陆接口成功 url{} param {} {}", "/login", userId, password);
+            return Result.defaultSuccess(loginService.login(userId, password));
+        } catch (RuntimeException b) {
+            logger.error("=====调用登陆接口失败 url{}" + "/login" + b.getMessage(), b);
+            return Result.failure(0, b.getMessage());
+        } catch (Exception e) {
+            logger.error("=====调用登陆接口失败 url{}" + "/login" + e.getMessage(), e);
+            return Result.failure(0, e.getMessage());
         }
-        resultMap.put("isSuccess", false);
-        return resultMap;
     }
 
+
+    /**
+     * 刷新token
+     */
+    @PostMapping("/refresh")
+    public Result refreshToken(@RequestParam("refreshToken") String refreshToken) {
+
+        try {
+            logger.info("=====调用刷新token接口成功 url{} param {}", "/refresh", refreshToken);
+            return Result.defaultSuccess(loginService.refreshToken(refreshToken));
+        } catch (RuntimeException b) {
+            logger.error("=====调用刷新token失败 url{}" + "/refresh" + b.getMessage(), b);
+            return Result.failure(0, b.getMessage());
+        } catch (Exception e) {
+            logger.error("=====调用刷新token失败 url{}" + "/refresh" + e.getMessage(), e);
+            return Result.failure(0, e.getMessage());
+        }
+
+    }
 
 }
