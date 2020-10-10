@@ -33,7 +33,7 @@ public class LoginFilter implements GlobalFilter, Ordered {
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-        logger.info("gateway001开始进行验证token.....");
+        logger.info("gateway000开始进行验证token.....");
         //从请求头中取出token
         String token = exchange.getRequest().getHeaders().getFirst("Authorization");
         if (StringUtils.isBlank(token)) {
@@ -45,7 +45,7 @@ public class LoginFilter implements GlobalFilter, Ordered {
             } else {
                 //提示登陆
                 exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
-                logger.info("gateway001过滤掉该请求,请先进行登陆，拿token！");
+                logger.info("gateway000过滤掉该请求,请先进行登陆，拿token！");
                 return exchange.getResponse().setComplete();
             }
         }
