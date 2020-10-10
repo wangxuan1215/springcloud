@@ -36,24 +36,4 @@ public class LoginController {
         }
     }
 
-
-    /**
-     * 刷新token
-     */
-    @PostMapping("/refresh")
-    public Result refreshToken(@RequestParam("refreshToken") String refreshToken) {
-
-        try {
-            logger.info("=====调用刷新token接口成功 url{} param {}", "/refresh", refreshToken);
-            return Result.defaultSuccess(loginService.refreshToken(refreshToken));
-        } catch (RuntimeException b) {
-            logger.error("=====调用刷新token失败 url{}" + "/refresh" + b.getMessage(), b);
-            return Result.failure(0, b.getMessage());
-        } catch (Exception e) {
-            logger.error("=====调用刷新token失败 url{}" + "/refresh" + e.getMessage(), e);
-            return Result.failure(0, e.getMessage());
-        }
-
-    }
-
 }
