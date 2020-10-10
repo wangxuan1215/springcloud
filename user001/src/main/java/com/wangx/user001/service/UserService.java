@@ -1,7 +1,11 @@
 package com.wangx.user001.service;
 
+import com.wangx.user001.common.Result;
 import com.wangx.user001.dao.UserDao;
+import com.wangx.user001.feign.AuthcenterFeign;
 import com.wangx.user001.modle.UserVo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,6 +17,9 @@ public class UserService {
 
     @Autowired
     private UserDao userDao;
+    @Autowired
+    private AuthcenterFeign authcenterFeign;
+    private Logger logger = LoggerFactory.getLogger(UserService.class);
 
     public String getUserInfo(String userId) {
         Optional.ofNullable(userId).orElseThrow(() -> new RuntimeException("userId不能为空"));
@@ -23,10 +30,12 @@ public class UserService {
      * 注册用户
      */
     @Transactional(rollbackFor = Exception.class)
-    public Integer insertUser(UserVo userVo) {
+    public Result registerUser(UserVo userVo) {
         Optional.ofNullable(userVo.getUserId()).orElseThrow(() -> new RuntimeException("账号为空"));
         Optional.ofNullable(userVo.getPassword()).orElseThrow(() -> new RuntimeException("密码为空"));
         Optional.ofNullable(userVo.getUserName()).orElseThrow(() -> new RuntimeException("名字为空"));
-        return userDao.insertUser(userVo);
+        Integer integer = userDao.insertUser(userVo);
+        logger.info("用户注册成功：" + integer + " 准备创建token.......");
+        return authcenterFeign.register(userVo.getUserId());
     }
 }

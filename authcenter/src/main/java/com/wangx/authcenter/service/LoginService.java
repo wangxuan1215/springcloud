@@ -13,6 +13,7 @@ import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class LoginService {
 
     @Autowired
@@ -22,7 +23,9 @@ public class LoginService {
     @Autowired
     private RedisTemplate redisTemplate;
 
-    @Transactional(rollbackFor = Exception.class)
+    /**
+     * 登陆
+     */
     public Map<String, Object> login(String userId, String password) {
         Optional.ofNullable(userId).orElseThrow(() -> new RuntimeException("账号不能为空"));
         Optional.ofNullable(password).orElseThrow(() -> new RuntimeException("密码不能为空"));
@@ -31,13 +34,25 @@ public class LoginService {
         if (count == 0) {
             throw new RuntimeException("用户名密码错误");
         }
-        //生成token
+        return jwtData(userId);
+    }
+
+    /**
+     * 注册
+     */
+    public Map<String, Object> register(String userId) {
+        Optional.ofNullable(userId).orElseThrow(() -> new RuntimeException("账号不能为空"));
+        return jwtData(userId);
+    }
+
+    /**
+     * 封装jwt数据
+     */
+    private Map<String, Object> jwtData(String userId) {
         Map<String, Object> resultMap = new HashMap<>();
         Map<String, Object> jwtMap = jwtUtil.generateToken(userId);
         String token = String.valueOf(jwtMap.get("token"));
         String refreshToken = String.valueOf(jwtMap.get("refreshToken"));
-//        //生成refreshToken
-//        String refreshToken = UUID.randomUUID().toString().replaceAll("-", "");
         //保存到redis
         redisTemplate.opsForHash().put(token,
                 "userId", userId);
@@ -47,9 +62,7 @@ public class LoginService {
         redisTemplate.expire(token,
                 1, TimeUnit.HOURS);
         //返回结果
-        Map<String, Object> dataMap = new HashMap<>();
         resultMap.put("data", jwtMap);
         return resultMap;
     }
-
 }

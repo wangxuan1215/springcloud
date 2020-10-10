@@ -27,6 +27,7 @@ public class LoginFilter implements GlobalFilter, Ordered {
     @Autowired
     private RedisTemplate redisTemplate;
     public static final String LOGIN_URL = "/authcenter/login";
+    public static final String REGISTER_URL = "/user/register";
     public static final String SECRET = "qazwsx123444$#%#()*&& asdaswwi1235 ?;!@#kmmmpom in***xx**&";
     public static final String TOKEN_PREFIX = "Bearer";
     private Logger logger = LoggerFactory.getLogger(LoginFilter.class);
@@ -39,7 +40,10 @@ public class LoginFilter implements GlobalFilter, Ordered {
         if (StringUtils.isBlank(token)) {
             //登陆接口放行
             String url = exchange.getRequest().getURI().getPath();
-            if (url.contains(LOGIN_URL)) {
+            if (url.contains(REGISTER_URL)) {
+                logger.info("路由到user服务进行注册.....");
+                return chain.filter(exchange);
+            } else if (url.contains(LOGIN_URL)) {
                 logger.info("路由到authcenter服务进行登陆.....");
                 return chain.filter(exchange);
             } else {

@@ -1,16 +1,16 @@
 package com.wangx.user002.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
+import com.wangx.user002.common.Result;
+import com.wangx.user002.modle.UserVo;
 import com.wangx.user002.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping
@@ -20,6 +20,27 @@ public class UserController {
     @Autowired
     private UserService userService;
     private Logger logger = LoggerFactory.getLogger(UserController.class);
+
+
+    /**
+     * 注册用户
+     */
+    @PostMapping("/register")
+    public Result registerUser(UserVo userVo) {
+        try {
+            logger.info("=====调用注册用户接口成功 url{} param {}", "/register", JSON.toJSONString(userVo));
+            return Result.defaultSuccess(userService.registerUser(userVo));
+        } catch (RuntimeException b) {
+            logger.error("=====调用注册用户接口失败 url{}" + "/register" + b.getMessage(), b);
+            return Result.failure(0, b.getMessage());
+        } catch (Exception e) {
+            logger.error("=====调用注册用户接口失败 url{}" + "/register" + e.getMessage(), e);
+            return Result.failure(0, e.getMessage());
+        }
+    }
+
+
+
 
     @GetMapping("/getUserInfo/{userId}")
     @HystrixCommand(fallbackMethod = "feignUserFallback", commandProperties = {

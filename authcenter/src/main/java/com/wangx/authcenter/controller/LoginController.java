@@ -36,4 +36,18 @@ public class LoginController {
         }
     }
 
+    @PostMapping("/register")
+    public Result register(@RequestParam("userId") String userId) {
+        try {
+            logger.info("=====调用注册接口成功 url{} param {}", "/register", userId);
+            return Result.defaultSuccess(loginService.register(userId));
+        } catch (RuntimeException b) {
+            logger.error("=====调用注册接口失败 url{}" + "/register" + b.getMessage(), b);
+            return Result.failure(0, b.getMessage());
+        } catch (Exception e) {
+            logger.error("=====调用注册接口失败 url{}" + "/register" + e.getMessage(), e);
+            return Result.failure(0, e.getMessage());
+        }
+    }
+
 }

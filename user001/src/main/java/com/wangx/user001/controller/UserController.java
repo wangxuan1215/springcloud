@@ -25,16 +25,16 @@ public class UserController {
     /**
      * 注册用户
      */
-    @PostMapping("/insert")
-    public Result insertUser(UserVo userVo) {
+    @PostMapping("/register")
+    public Result registerUser(UserVo userVo) {
         try {
-            logger.info("=====调用注册用户接口成功 url{} param {}", "/insert", JSON.toJSONString(userVo));
-            return Result.defaultSuccess(userService.insertUser(userVo));
+            logger.info("=====调用注册用户接口成功 url{} param {}", "/register", JSON.toJSONString(userVo));
+            return Result.defaultSuccess(userService.registerUser(userVo));
         } catch (RuntimeException b) {
-            logger.error("=====调用注册用户接口失败 url{}" + "/insert" + b.getMessage(), b);
+            logger.error("=====调用注册用户接口失败 url{}" + "/register" + b.getMessage(), b);
             return Result.failure(0, b.getMessage());
         } catch (Exception e) {
-            logger.error("=====调用注册用户接口失败 url{}" + "/insert" + e.getMessage(), e);
+            logger.error("=====调用注册用户接口失败 url{}" + "/register" + e.getMessage(), e);
             return Result.failure(0, e.getMessage());
         }
     }
