@@ -4,6 +4,7 @@ import com.wangx.authcenter.dao.LoginDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,6 +22,7 @@ public class LoginService {
     @Autowired
     private RedisTemplate redisTemplate;
 
+    @Transactional(rollbackFor = Exception.class)
     public Map<String, Object> login(String userId, String password) {
         Optional.ofNullable(userId).orElseThrow(() -> new RuntimeException("账号不能为空"));
         Optional.ofNullable(password).orElseThrow(() -> new RuntimeException("密码不能为空"));
