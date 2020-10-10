@@ -16,7 +16,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -72,7 +71,6 @@ public class LoginFilter implements GlobalFilter, Ordered {
      */
     private String validateToken(String token) {
         if (token != null) {
-            HashMap<String, String> map = new HashMap<String, String>();
             Map<String, Object> body = Jwts.parser()
                     .setSigningKey(SECRET)
                     .parseClaimsJws(token.replace(TOKEN_PREFIX, ""))

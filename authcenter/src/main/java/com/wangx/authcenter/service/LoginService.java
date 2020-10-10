@@ -2,7 +2,6 @@ package com.wangx.authcenter.service;
 
 import com.wangx.authcenter.dao.LoginDao;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -21,10 +20,6 @@ public class LoginService {
     private LoginDao loginDao;
     @Autowired
     private RedisTemplate redisTemplate;
-    @Value("${jwt.refresh.token.key.format}")
-    private String jwtRefreshTokenKeyFormat;
-    @Value("${jwt.blacklist.key.format}")
-    private String jwtBlacklistKeyFormat;
 
     public Map<String, Object> login(String userId, String password) {
         Optional.ofNullable(userId).orElseThrow(() -> new RuntimeException("账号不能为空"));
