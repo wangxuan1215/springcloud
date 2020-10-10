@@ -1,6 +1,7 @@
 package com.wangx.authcenter.service;
 
 import com.wangx.authcenter.dao.LoginDao;
+import com.wangx.authcenter.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -9,14 +10,13 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.concurrent.TimeUnit;
-
-import static com.wangx.authcenter.util.JwtUtil.generateToken;
 
 @Service
 public class LoginService {
 
+    @Autowired
+    private JwtUtil jwtUtil;
     @Autowired
     private LoginDao loginDao;
     @Autowired
@@ -33,9 +33,11 @@ public class LoginService {
         }
         //生成token
         Map<String, Object> resultMap = new HashMap<>();
-        String token = generateToken(userId);
-        //生成refreshToken
-        String refreshToken = UUID.randomUUID().toString().replaceAll("-", "");
+        Map<String, Object> jwtMap = jwtUtil.generateToken(userId);
+        String token = String.valueOf(jwtMap.get("token"));
+        String refreshToken = String.valueOf(jwtMap.get("refreshToken"));
+//        //生成refreshToken
+//        String refreshToken = UUID.randomUUID().toString().replaceAll("-", "");
         //保存到redis
         redisTemplate.opsForHash().put(token,
                 "userId", userId);
@@ -46,9 +48,7 @@ public class LoginService {
                 1, TimeUnit.HOURS);
         //返回结果
         Map<String, Object> dataMap = new HashMap<>();
-        dataMap.put("token", token);
-        dataMap.put("refreshToken", refreshToken);
-        resultMap.put("data", dataMap);
+        resultMap.put("data", jwtMap);
         return resultMap;
     }
 
