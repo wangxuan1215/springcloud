@@ -7,12 +7,13 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="config001" />
+        <module name="user001" />
         <module name="eureka002" />
         <module name="user002" />
         <module name="gateway001" />
+        <module name="gateway000" />
         <module name="authcenter" />
         <module name="order001" />
-        <module name="user001" />
         <module name="eureka001" />
       </profile>
     </annotationProcessing>
@@ -23,6 +24,7 @@
       <module name="eureka001" target="1.8" />
       <module name="eureka002" target="1.8" />
       <module name="eureka003" target="1.8" />
+      <module name="gateway000" target="1.8" />
       <module name="gateway001" target="1.8" />
       <module name="gateway002" target="1.8" />
       <module name="order001" target="1.8" />
@@ -39,6 +41,7 @@
       <module name="eureka001" options="-parameters" />
       <module name="eureka002" options="-parameters" />
       <module name="eureka003" options="-parameters" />
+      <module name="gateway000" options="-parameters" />
       <module name="gateway001" options="-parameters" />
       <module name="gateway002" options="-parameters" />
       <module name="order001" options="-parameters" />

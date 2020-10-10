@@ -6,6 +6,7 @@
       <module fileurl="file://$PROJECT_DIR$/config001/config001.iml" filepath="$PROJECT_DIR$/config001/config001.iml" />
       <module fileurl="file://$PROJECT_DIR$/eureka001/eureka001.iml" filepath="$PROJECT_DIR$/eureka001/eureka001.iml" />
       <module fileurl="file://$PROJECT_DIR$/eureka002/eureka002.iml" filepath="$PROJECT_DIR$/eureka002/eureka002.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gateway000/gateway000.iml" filepath="$PROJECT_DIR$/gateway000/gateway000.iml" />
       <module fileurl="file://$PROJECT_DIR$/gateway001/gateway001.iml" filepath="$PROJECT_DIR$/gateway001/gateway001.iml" />
       <module fileurl="file://$PROJECT_DIR$/gateway002/gateway002.iml" filepath="$PROJECT_DIR$/gateway002/gateway002.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/mycloud.iml" filepath="$PROJECT_DIR$/.idea/mycloud.iml" />
