@@ -28,7 +28,7 @@ public class JwtUtil {
                 .setSubject("user info").setClaims(map)
                 .signWith(SignatureAlgorithm.HS512, SECRET)
                 .compact();
-        String token = TOKEN_PREFIX + " " + jwt;
+        String token = /**TOKEN_PREFIX + " " +*/jwt;
         String refreshToken = UUID.randomUUID().toString().replaceAll("-", "");
         resultMap.put("token", token);
         resultMap.put("refreshToken", refreshToken);
