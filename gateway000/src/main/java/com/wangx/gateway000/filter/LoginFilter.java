@@ -49,7 +49,7 @@ public class LoginFilter implements GlobalFilter, Ordered {
             } else {
                 //提示登陆
                 exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
-                logger.info("gateway001过滤掉该请求,请先进行登陆，拿token！");
+                logger.info("gateway000过滤掉该请求,请先进行登陆，拿token！");
                 return exchange.getResponse().setComplete();
             }
         }
